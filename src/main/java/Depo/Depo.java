@@ -31,9 +31,30 @@ public class Depo {
 
     }
 
-    public static void urunListele() {
+    public static void urunListele() { //umut , Muhammed ,
 
-        //umut , Muhammed ,
+        //urun listesi bos kontrol
+        if (urunler.isEmpty()) {
+            System.out.println("Listelenecek ürün yok.");
+            return;
+        }
+
+        //hizalama ve okunabilirlik (genislik kismi duzenlenebilir ??renklendirme ve dikey cizgiler eklenebilir??)
+        System.out.println("---------------------------------------------------------------");
+        System.out.printf("%-8s %-12s %-15s %-10s %-10s %-10s\n",
+                "ID", "Isim", "Uretici", "Miktar", "Birim", "Raf");
+        System.out.println("---------------------------------------------------------------");
+
+        //urun yazdirma (rafa koyma islemi tanimlama fonksiyonunda kontrol ediliyorsa son satir duzenlenecek)
+        for (Urun urun : urunler.values()) {
+            System.out.printf("%-8d %-12s %-15s %-10d %-10s %-10s\n",
+                    urun.getId(),
+                    urun.getUrunIsmi(),
+                    urun.getUretici(),
+                    urun.getMiktar(),
+                    urun.getBirim(),
+                    (urun.getRaf() == null || urun.getRaf().isBlank() ? "-" : urun.getRaf()));
+        }
     }
 
     public static void urunGirisi() {
