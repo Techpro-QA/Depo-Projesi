@@ -71,7 +71,24 @@ public class Depo {
 
     public static void urunCikisi() {
 
-        //Botan
+        //Botan 
+
+        Urun u = isteUrun("çıkış yapılacak ürünün ID'si");
+        if (u == null) return;
+
+        System.out.printf("Stok: %d %s%nÇıkış miktarı: ", u.getMiktar(), u.getBirim());
+        int adet = SC.nextInt();
+
+        if (adet <= 0) {
+            System.out.println("Hata: Miktar pozitif olmalıdır.");
+            return;
+        }
+        if (adet > u.getMiktar()) {
+            System.out.println("Hata: Stokta bu kadar ürün yok!");
+            return;
+        }
+        u.setMiktar(u.getMiktar() - adet);
+        System.out.printf("Çıkış OK. Kalan stok: %d %s%n", u.getMiktar(), u.getBirim());
 
     }
 
