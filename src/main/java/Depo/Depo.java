@@ -72,6 +72,7 @@ public class Depo {
     public static void urunCikisi() {
 
         //Botan 
+        //
 
         Urun u = isteUrun("çıkış yapılacak ürünün ID'si");
         if (u == null) return;
