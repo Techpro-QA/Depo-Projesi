@@ -1,4 +1,4 @@
-package Depo;
+package DepoProject;
 
 public class Task {
     /*

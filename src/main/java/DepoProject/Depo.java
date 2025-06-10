@@ -1,4 +1,4 @@
-package Depo;
+package DepoProject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,21 +11,22 @@ public class Depo {
 
         //çiğdem , lütfiye
     }
-    public static void urunTanimlama(String urunIsmi, String uretici,int miktar,String birim,String raf){
+    public static void urunTanimlama(String urunIsmi,String uretici, String birim){
         //bos veri kontrolu
-        if (urunIsmi==null || uretici==null || birim==null || raf == null){
-            System.out.println("Hata! Urun bilgileri bos olamaz");
+        if (urunIsmi == null || urunIsmi.trim().isEmpty() ||
+                uretici == null || uretici.trim().isEmpty() ||
+                birim == null || birim.trim().isEmpty()) {
+            System.out.println("Hata! Urun bilgileri bos veya eksik olamaz");
             return;
         }
-        // negatif miktar kontrolu
-        if (miktar<0){
-            System.out.println("Hata urun miktari negatif olamaz");
-        }
 
-        //yeni urunu olusturuyoruz
-        Urun yeniUrun = new Urun(urunIsmi,uretici,miktar,birim,raf);
-        urunler.put(yeniUrun.getId(),yeniUrun);//static olan hashmap icine ekledik
-        System.out.println("Urun basariyla tanimlandi " + yeniUrun);
+        // 3. Ürün oluşturuluyor
+       Urun yeniUrun = new Urun(urunIsmi, uretici, birim );
+
+        // 4. Map'e ekleniyor
+        urunler.put(yeniUrun.getId(), yeniUrun);
+        System.out.println("Ürün başarıyla tanımlandı: " + yeniUrun.getId());
+
 
 
 
@@ -57,9 +58,27 @@ public class Depo {
         }
     }
 
-    public static void urunGirisi() {
+    public static void urunGirisi(int id, int miktar) {
 
-        //emre
+        // urun id si kontrol
+        if (!urunler.containsKey(id)){
+            System.out.println("Hata : Bu ID ye sahip bir urun bulunamadi ");
+            return;
+        }
+        //negatif miktar kontrolu
+        if (miktar<=0){
+            System.out.println("Hata ! Girilen miktar sifir veya negatif olamaz");
+            return;
+        }
+
+        //urun alinir ve miktar arttirilir
+        Urun urun = urunler.get(id);
+        urun.setMiktar(urun.getMiktar() + miktar);
+
+        //bilgilendirme
+        System.out.println("Urun girisi yapildi : " + miktar + " " + urun.getBirim() +
+                " eklendi -> Urun :  " + urun.getUrunIsmi() +
+                " | Yeni miktar: " + urun.getMiktar() + " " + urun.getBirim());
     }
 
     public static void urunuRafaKoy() {
@@ -71,27 +90,8 @@ public class Depo {
 
     public static void urunCikisi() {
 
-        //Botan 
-        //
 
-        Urun u = isteUrun("çıkış yapılacak ürünün ID'si");
-        if (u == null) return;
-
-        System.out.printf("Stok: %d %s%nÇıkış miktarı: ", u.getMiktar(), u.getBirim());
-        int adet = SC.nextInt();
-
-        if (adet <= 0) {
-            System.out.println("Hata: Miktar pozitif olmalıdır.");
-            return;
-        }
-        if (adet > u.getMiktar()) {
-            System.out.println("Hata: Stokta bu kadar ürün yok!");
-            return;
-        }
-        u.setMiktar(u.getMiktar() - adet);
-        System.out.printf("Çıkış OK. Kalan stok: %d %s%n", u.getMiktar(), u.getBirim());
-
-    }
+   }
 
 
     public Map<Integer, Urun> getUrunler() {
