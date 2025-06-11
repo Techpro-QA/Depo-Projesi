@@ -8,7 +8,7 @@ public class DepoApp {
         boolean devam = true;
 
         while (devam) {
-            System.out.println("\n==== DEPO YÖNETİM SİSTEMİ ====");
+            System.out.println("\n***** DEPO YÖNETİM SİSTEMİ *****");
             System.out.println("1- Ürün Tanımla");
             System.out.println("2- Ürün Girişi");
             System.out.println("3- Ürün Çıkışı");
