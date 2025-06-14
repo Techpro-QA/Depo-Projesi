@@ -6,7 +6,7 @@ public class DepoSistem {
 
     public static Map<Integer, Urun> urunMap = new HashMap<>();
     public static Scanner scan = new Scanner(System.in);
-    static int RAF_KAPASITE = 100 ;
+    static int RAF_KAPASITE = 99999999;
     private static int miktar;
     private static Map<String, Integer> rafDoluluk = new HashMap<>();
 
@@ -19,8 +19,8 @@ public class DepoSistem {
 
         // Birim seçeneklerini sunuyoruz
         System.out.println("Birim seçiniz:");
-        System.out.println("1 - Çuval-20kg");
-        System.out.println("2 - Adet-3kg");
+        System.out.println("1 - Çuval");
+        System.out.println("2 - Adet");
 
         String birim = "";
         boolean gecerliSecim = false;
@@ -31,7 +31,7 @@ public class DepoSistem {
 
             switch (secim) {
                 case "1":
-                    birim = "çuval-20kg";
+                    birim = "çuval";
                     gecerliSecim = true;
                     break;
                 case "2":
@@ -56,29 +56,40 @@ public class DepoSistem {
 
         urunListele();
 
-        System.out.print("Ürün ID: ");
-        int id = scan.nextInt();
-        scan.nextLine();
+        int id;
+        while (true) {
+            try {
+                System.out.print("Ürün ID: ");
+                id = scan.nextInt();
+                scan.nextLine();
 
-        try {
-            id = Integer.parseInt(scan.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Geçersiz giriş! Lütfen sayısal bir ID giriniz.");
-            return;
+                if (urunMap.containsKey(id)) {
+                    break;
+                } else {
+                    System.out.println("Bu ID'ye ait ürün bulunamadı. Lütfen tekrar deneyin.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Lütfen geçerli bir sayı girin.");
+                scan.nextLine();
+            }
         }
 
+        int miktar;
+        while (true) {
+            try {
+                System.out.print("Giriş miktarı: ");
+                miktar = scan.nextInt();
+                scan.nextLine();
 
-        if (!urunMap.containsKey(id)) {
-            System.out.println("Bu ID'ye ait ürün bulunamadı.");
-            return;
-        }
-        System.out.print("Giriş miktarı: ");
-        int miktar = scan.nextInt();
-        scan.nextLine();
-
-        if (miktar <= 0) {
-            System.out.println("Sifir(0)' dan büyük bir miktar girisi yapiniz");
-            return;
+                if (miktar > 0) {
+                    break;
+                } else {
+                    System.out.println("Sıfır (0)'dan büyük bir miktar giriniz.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Lütfen geçerli bir sayı girin.");
+                scan.nextLine();
+            }
         }
         Urun urun = urunMap.get(id);
         urun.setMiktar(urun.getMiktar());
@@ -101,8 +112,6 @@ public class DepoSistem {
         System.out.print("Ürün ID: ");
         int id;
 
-
-
         try {
 
             id = Integer.parseInt(scan.nextLine()); //int dışında deger girilirse
@@ -111,54 +120,62 @@ public class DepoSistem {
             return;
         }
 
-        Urun urun = urunMap.get(id);
-        if (urun != null) {
-            System.out.println("Seçilen Ürün: " + urun.getUrunIsmi() + " | Mevcut: " + urun.getMiktar() + " " + urun.getBirim());
-            System.out.print("Çıkış miktarı: ");
+        try {
 
-            int miktar;
-            try {
-                miktar = Integer.parseInt(scan.nextLine()); //int dışında deger girilirse
-            } catch (NumberFormatException e) {
-                System.out.println("Geçersiz miktar! Lütfen sayı giriniz.");
-                return;
-            }
 
-            if (miktar <= 0) {
-                System.out.println("Geçersiz miktar. Pozitif bir değer giriniz.");
-                return;
-            }
+            Urun urun = urunMap.get(id);
+            if (urun != null) {
+                System.out.println("Seçilen Ürün: " + urun.getUrunIsmi() + " | Mevcut: " + urun.getMiktar() + " " + urun.getBirim());
+                System.out.print("Çıkış miktarı: ");
 
-            if (urun.getMiktar() >= miktar) {
-                urun.setMiktar(urun.getMiktar() - miktar);
-                System.out.println(miktar + " birim ürün çıkışı yapıldı.");
-
-                if (urun.getMiktar() == 0) {  //Ürün çıkışı yapıldı ama ürün silinmeyecek, uyarı verdik
-                    System.out.println("Uyarı: Bu ürünün stoğu sıfırlandı.");
+                int miktar;
+                try {
+                    miktar = Integer.parseInt(scan.nextLine()); //int dışında deger girilirse
+                } catch (NumberFormatException e) {
+                    System.out.println("Geçersiz miktar! Lütfen sayı giriniz.");
+                    return;
                 }
 
+                if (miktar <= 0) {
+                    System.out.println("Geçersiz miktar. Pozitif bir değer giriniz.");
+                    return;
+                }
+
+                if (urun.getMiktar() >= miktar) {
+                    urun.setMiktar(urun.getMiktar() - miktar);
+                    System.out.println(miktar + " birim ürün çıkışı yapıldı.");
+
+                    if (urun.getMiktar() == 0) {  //Ürün çıkışı yapıldı ama ürün silinmeyecek, uyarı verdik
+                        System.out.println("Uyarı: Bu ürünün stoğu sıfırlandı.");
+                    }
+
+                } else {
+                    System.out.println("HATA: Yeterli stok yok. Mevcut miktar: " + urun.getMiktar());
+                    // mevcut stoktan daha fazla miktarda çıkış yapmaya çalışılırsa
+                }
+
+                // Her durumda güncel ürün listesi gösterilsin
+
+                urunListele();
+
             } else {
-                System.out.println("HATA: Yeterli stok yok. Mevcut miktar: " + urun.getMiktar());
-                // mevcut stoktan daha fazla miktarda çıkış yapmaya çalışılırsa
+
+                System.out.println("Ürün bulunamadı. Lütfen geçerli bir ID giriniz.");
             }
 
-            // Her durumda güncel ürün listesi gösterilsin
-            urunListele();
 
-        } else {
-            System.out.println("Ürün bulunamadı. Lütfen geçerli bir ID giriniz.");
+            String raf = urun.getRaf();
+            if (!raf.equals("-")) {
+                int mevcutDoluluk = rafDoluluk.getOrDefault(raf, 0);
+                rafDoluluk.put(raf, Math.max(0, mevcutDoluluk - miktar));
+            }
+            urun.setMiktar(urun.getMiktar() - miktar);
+        } catch (NullPointerException e) {
+            System.out.println("Tanımsız bir id girdiniz!!");
         }
-
-
-        String raf = urun.getRaf();
-        if (!raf.equals("-")) {
-            int mevcutDoluluk = rafDoluluk.getOrDefault(raf, 0);
-            rafDoluluk.put(raf, Math.max(0, mevcutDoluluk - miktar));
-        }
-        urun.setMiktar(urun.getMiktar() - miktar);
-
-
     }
+
+
 
 
     public static void urunuRafaKoy() {
@@ -285,10 +302,10 @@ public class DepoSistem {
         }
 
         //hizalama ve okunabilirlik (genislik kismi duzenlenebilir ??renklendirme ve dikey cizgiler eklenebilir??)
-        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------");
         System.out.printf("%-8s %-12s %-15s %-10s %-10s %-10s %-8s\n",
-                "ID", "Isim", "Uretici", "Miktar", "Birim", "Raf", "Uyarı");
-        System.out.println("-----------------------------------------------------------------------------");
+                "ID", "Isim", "Uretici", "Miktar", "Birim", "Raf", "Stok Uyarısı");
+        System.out.println("--------------------------------------------------------------------------------------");
 
         for (Urun urun : urunMap.values()) {
 
@@ -302,22 +319,26 @@ public class DepoSistem {
 
         urunListele();
 
-        System.out.print("Ürün ID: ");
-        int id = Integer.parseInt(scan.nextLine());
+        try {
+            System.out.print("Ürün ID: ");
+            int id = Integer.parseInt(scan.nextLine());
 
-        Urun urun = urunMap.get(id);
-        if (urun != null) {
-            System.out.print("Yeni minimum stok: ");
-            int min = Integer.parseInt(scan.nextLine());
+            Urun urun = urunMap.get(id);
+            if (urun != null) {
+                System.out.print("Yeni minimum stok: ");
+                int min = Integer.parseInt(scan.nextLine());
 
-            urun.setMinStok(min);
-            System.out.println("Minimum stok ayarlandı.");
-        } else {
-            System.out.println("Ürün bulunamadı.");
+                urun.setMinStok(min);
+                System.out.println("Minimum stok ayarlandı.");
+            } else {
+                System.out.println("Ürün bulunamadı.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Tanımsız bir id girdiniz!!");
         }
 
     }
-
 
 
 }

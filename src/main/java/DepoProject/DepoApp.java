@@ -9,10 +9,27 @@ public class DepoApp {
         boolean devam = true;
 
         while (devam) {
-            System.out.println("\n==== DEPO YÖNETİM SİSTEMİ ====");
+
+            System.out.println("****************************************");
+            System.out.println("*                                      *");
+            System.out.println("*         * * *                        *");
+            System.out.println("*       * * * * *                      *");
+            System.out.println("*      * *       *       *             *");
+            System.out.println("*      * *             * * *           *");
+            System.out.println("*      * *       *      * *            *");
+            System.out.println("*       * * * * *                      *");
+            System.out.println("*         * * *                        *");
+            System.out.println("*                                      *");
+            System.out.println("****************************************");
+            System.out.println();
+
+
+            System.out.println("GÜVEN DEPO\nAnonim Sirketi\nSirkeci / Istanbul\nwww.guvendepo.com\nIrtibat tel: 0212 255 555 55");
+
+            System.out.println("\n**** GÜVEN DEPO YÖNETİM PANELİ ****");
             System.out.println("1- Ürün Tanımla");
-            System.out.println("2- Ürün Girişi");
-            System.out.println("3- Ürün Çıkışı");
+            System.out.println("2- Ürün Stok Girişi");
+            System.out.println("3- Ürün Stok Çıkışı");
             System.out.println("4- Ürünü Rafa Koy");
             System.out.println("5- Ürünleri Listele");
             System.out.println("6- Minimum Stok Seviyesi Ayarla");

@@ -11,7 +11,7 @@ public class Urun {
     public static int idCounter = 1000;
 
 
-    public Urun( String urunIsmi, String uretici,  String birim) {
+    public Urun(String urunIsmi, String uretici,  String birim) {
         idCounter++;
         this.id = idCounter;
         this.urunIsmi = urunIsmi;
